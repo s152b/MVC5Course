@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MVC5Course.Models;
 using PagedList;
 using PagedList.Mvc;
+using System.Net.Http.Formatting;
 
 namespace MVC5Course.Controllers
 {
@@ -105,17 +106,28 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
+        //public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
+        public ActionResult Edit(int id, FormCollection form)
         {
-            if (ModelState.IsValid)
+
+            //if (ModelState.IsValid)
+            //{
+            //    var db = repoProds.UnitOfWork.Context;
+            //    db.Entry(product).State = EntityState.Modified;
+            //    //db.SaveChanges();
+            //    repoProds.UnitOfWork.Commit();
+            //    return RedirectToAction("Index");
+            //}
+            //return View(product);
+
+            //改TryUpdateModel
+            var prod = repoProds.Find(id);
+            if (TryUpdateModel(prod, new string[] { "ProductName", "Price" }))
             {
-                var db = repoProds.UnitOfWork.Context;
-                db.Entry(product).State = EntityState.Modified;
-                //db.SaveChanges();
                 repoProds.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(prod);
         }
 
         // GET: Products/Delete/5
@@ -146,6 +158,54 @@ namespace MVC5Course.Controllers
             //db.SaveChanges();
             repoProds.UnitOfWork.Commit();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Index2(string sortBy, string keyword, int pageNo = 1)
+        {
+            FindAllProd(sortBy, keyword, pageNo);
+
+            return View();
+        }
+
+        private void FindAllProd(string sortBy, string keyword, int pageNo)
+        {
+            var data = repoProds.All().AsQueryable();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                data = data.Where(p => p.ProductName.Contains(keyword));
+            }
+            if (sortBy == "+Price")
+            {
+                data = data.OrderBy(p => p.Price);
+            }
+            else
+            {
+                data = data.OrderByDescending(p => p.Price);
+            }
+            ViewBag.keyword = keyword;
+            ViewBag.pageNo = pageNo;
+            ViewData.Model = data.ToPagedList(pageNo, 10);
+        }
+
+        [HttpPost]
+        public ActionResult Index2(IList<Product>data ,string sortBy, string keyword, int pageNo = 1)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in data)
+                {
+                    var prod = repoProds.Find(item.ProductId);
+                    prod.ProductName = item.ProductName;
+                    prod.Price = item.Price;
+                    
+                }
+                repoProds.UnitOfWork.Commit();
+                //return RedirectToAction("Index2");
+                FindAllProd(sortBy, keyword, pageNo);
+                return View();
+            }
+            FindAllProd(sortBy, keyword, pageNo);
+            return View();
         }
 
         protected override void Dispose(bool disposing)

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<MVC5Course.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+<h2>Index</h2>
+<p>
+    <form>
+
+        @Html.TextBox("keyword")
+        <input type="submit" value="搜尋" />
+    </form>
+</p>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using PagedList
+@using PagedList.Mvc
+@using (Html.BeginForm())
+{
+    @Html.PagedListPager(Model as IPagedList, (p) => Url.Action("Index2", new { pageNo = p, sortBy = "+Price", keyword = ViewBag.keyword }))
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                <a href="@Url.Action("Index","Products",  new { sortBy = "+Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo })">↑</a>
+                @Html.DisplayNameFor(model => model.Price)
+                <a href="@Url.Action("Index","Products",  new { sortBy = "-Price", keyword = ViewBag.keyword, pageNo = ViewBag.pageNo })" )">↓</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+        </tr>
+
+        @{
+            var data = Model.ToList<MVC5Course.Models.Product>();
+        }
+        @for (int i = 0; i < data.Count - 1; i++)
+        {
+            @Html.HiddenFor(modelItem => data[i].ProductId)
+            <tr>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].ProductName)
+                    @Html.ValidationMessageFor(modelItem => data[i].ProductName)
+                </td>
+                <td style="color:@(data[i].Price >= 100 ?  "Red": "Blue") ">
+                    @Html.EditorFor(modelItem => data[i].Price)
+                    @Html.ValidationMessageFor(modelItem => data[i].Price)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].Active)
+                    @Html.ValidationMessageFor(modelItem => data[i].Active)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].Stock)
+                    @Html.ValidationMessageFor(modelItem => data[i].Stock)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+
+    <input type="submit" value="送出" class="btn btn-primary btn-lg" />
+
+            }

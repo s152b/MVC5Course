@@ -47,23 +47,23 @@ namespace MVC5Course.Controllers
             if (ModelState.IsValid)
             {
                 ///////////////////////////////
-                string userData = "ApplicationSpecific data for this user";
+                //string userData = "ApplicationSpecific data for this user";
 
-                string strUsername = "你想要存放在 User.Identy.Name 的值，通常是使用者帳號";
-                bool isPersistent = true;
-                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
-                  strUsername,
-                  DateTime.Now,
-                  DateTime.Now.AddMinutes(30),
-                  isPersistent,
-                  userData,
-                  FormsAuthentication.FormsCookiePath);
+                //string strUsername = "你想要存放在 User.Identy.Name 的值，通常是使用者帳號";
+                //bool isPersistent = true;
+                //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
+                //  strUsername,
+                //  DateTime.Now,
+                //  DateTime.Now.AddMinutes(30),
+                //  isPersistent,
+                //  userData,
+                //  FormsAuthentication.FormsCookiePath);
 
-                // Encrypt the ticket.
-                string encTicket = FormsAuthentication.Encrypt(ticket);
+                //// Encrypt the ticket.
+                //string encTicket = FormsAuthentication.Encrypt(ticket);
 
-                // Create the cookie.
-                Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+                //// Create the cookie.
+                //Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
 
                 //所以要取得登入時設定的 userData 的方式，可以參考以下程式片段
                 //FormsIdentity id = (FormsIdentity)User.Identity;
@@ -80,6 +80,8 @@ namespace MVC5Course.Controllers
 
                 /////////////////////////////
                 FormsAuthentication.RedirectFromLoginPage(login.Username,false);
+                TempData["LoginInfo"] = login;
+
                 if (ReturnUrl !=null && ReturnUrl.StartsWith("/"))
                 {
                     return Redirect(ReturnUrl);
@@ -96,7 +98,7 @@ namespace MVC5Course.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }
