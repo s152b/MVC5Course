@@ -368,10 +368,17 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html">Home</a>
+                        <a href="@Url.Action("Index","Home")">Home</a>
                         <i class="icon-angle-right"></i>
                     </li>
-                    <li><a href="#">Dashboard</a></li>
+                    <li>
+                        
+                        @RenderSection("breadcrumb", false)
+                        @if (!IsSectionDefined("breadcrumb"))
+                        {
+                            <a href="#">請補上RenderSection breadcrumb</a>
+                        }
+                    </li>
                 </ul>
                 @RenderBody()
 
