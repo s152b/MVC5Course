@@ -6,14 +6,9 @@ using System.Web.Mvc;
 
 namespace MVC5Course.Controllers
 {
-    public class TestController : Controller
+    public class RazorTesController : Controller
     {
         // GET: Test
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult RazorTest()
         {
             int[] data = new int[] { 1, 2, 3, 4, 5 };

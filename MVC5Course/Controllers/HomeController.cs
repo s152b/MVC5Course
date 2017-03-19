@@ -18,6 +18,10 @@ namespace MVC5Course.Controllers
         {
             return View();
         }
+        public ActionResult Index2()
+        {
+            return View();
+        }
 
         public ActionResult About(string ex="")
         {
@@ -99,6 +103,7 @@ namespace MVC5Course.Controllers
             }
                     return RedirectToAction("Index");
         }
+
 
         [HttpPost]
         public ActionResult LogOff()
