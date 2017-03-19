@@ -437,6 +437,7 @@
     <Content Include="Views\RazorTest\RazorTest.cshtml" />
     <Content Include="Views\Test\RazorTest.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\Shared\_Layout.Metro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
