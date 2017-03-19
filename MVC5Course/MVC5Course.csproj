@@ -181,6 +181,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionFilterAttributes\僅在本機開發測試用Attribute.cs" />
+    <Compile Include="ActionFilterAttributes\紀錄Action執行時間.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -412,6 +414,7 @@
     <Content Include="Views\Shared\_ProductsList.cshtml" />
     <Content Include="Views\AR\Index.cshtml" />
     <Content Include="Views\Products\Index2.cshtml" />
+    <Content Include="Views\Shared\Error_DbEntityValidationException.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

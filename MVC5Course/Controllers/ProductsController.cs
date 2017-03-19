@@ -10,6 +10,7 @@ using MVC5Course.Models;
 using PagedList;
 using PagedList.Mvc;
 using System.Net.Http.Formatting;
+using System.Data.Entity.Validation;
 
 namespace MVC5Course.Controllers
 {
@@ -25,7 +26,7 @@ namespace MVC5Course.Controllers
         //ProductRepository repoProsd = RepositoryHelper.GetProductRepository();
 
         // GET: Products
-        public ActionResult Index(string sortBy, string keyword,int pageNo=1)
+        public ActionResult Index(string sortBy, string keyword, int pageNo = 1)
         {
             var data = repoProds.All().AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
@@ -42,7 +43,7 @@ namespace MVC5Course.Controllers
             }
             ViewBag.keyword = keyword;
             ViewBag.pageNo = pageNo;
-            return View(data.ToPagedList(pageNo,10));
+            return View(data.ToPagedList(pageNo, 10));
         }
 
         // GET: Products/Details/5
@@ -106,6 +107,7 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HandleError(View = "Error_DbEntityValidationException", ExceptionType = typeof(DbEntityValidationException))]
         //public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
         public ActionResult Edit(int id, FormCollection form)
         {
@@ -124,10 +126,11 @@ namespace MVC5Course.Controllers
             var prod = repoProds.Find(id);
             if (TryUpdateModel(prod, new string[] { "ProductName", "Price" }))
             {
-                repoProds.UnitOfWork.Commit();
-                return RedirectToAction("Index");
             }
-            return View(prod);
+
+            repoProds.UnitOfWork.Commit();
+            return RedirectToAction("Index");
+            // return View(prod);
         }
 
         // GET: Products/Delete/5
@@ -188,7 +191,7 @@ namespace MVC5Course.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index2(IList<Product>data ,string sortBy, string keyword, int pageNo = 1)
+        public ActionResult Index2(IList<Product> data, string sortBy, string keyword, int pageNo = 1)
         {
             if (ModelState.IsValid)
             {
@@ -197,7 +200,7 @@ namespace MVC5Course.Controllers
                     var prod = repoProds.Find(item.ProductId);
                     prod.ProductName = item.ProductName;
                     prod.Price = item.Price;
-                    
+
                 }
                 repoProds.UnitOfWork.Commit();
                 //return RedirectToAction("Index2");

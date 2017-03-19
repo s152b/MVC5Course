@@ -1,4 +1,5 @@
-﻿using MVC5Course.Models;
+﻿using MVC5Course.ActionFilterAttributes;
+using MVC5Course.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,8 @@ using System.Web.Security;
 
 namespace MVC5Course.Controllers
 {
-    public class HomeController : Controller
+    [紀錄Action執行時間]
+    public class HomeController : BaseController
     {
 
         public ActionResult Index()
@@ -17,13 +19,17 @@ namespace MVC5Course.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult About(string ex="")
         {
             ViewBag.Message = "Your application description page.";
-
+            if (ex.ToUpper().Contains("ERR"))
+            {
+                throw new OutOfMemoryException("故意的例外錯誤");
+            }
             return View();
         }
 
+        [僅在本機開發測試用Attribute]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

@@ -4,6 +4,24 @@
     ViewBag.Title = "Error";
 }
 
+@{
+    ViewBag.Title = "Error";
+
+    var ex = Model.Exception as System.Data.Entity.Validation.DbEntityValidationException;
+}
+
+<h1 class="text-danger">資料驗證失敗</h1>
+<h2 class="text-danger">錯誤訊息如下</h2>
+<ul>
+    @foreach (var errors in ex.EntityValidationErrors)
+    {
+        foreach (var err in errors.ValidationErrors)
+        {
+            <li>@err.PropertyName 發生錯誤：@err.ErrorMessage</li>
+        }
+    }
+</ul>
+
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 <h3>ControllerName : @Model.ControllerName</h3>
@@ -14,6 +32,9 @@
 <h4>Exception.HResult : @Model.Exception.HResult</h4>
 <h4>Exception.InnerException : @Model.Exception.InnerException</h4>
 <h4>Exception.Message : @Model.Exception.Message</h4>
+<hr />
 <h4>Exception.StackTrace : @Model.Exception.StackTrace</h4>
+<hr />
 <h4>Exception.TargetSite : @Model.Exception.TargetSite</h4>
+<hr />
 <h4>@Model.Exception.ToString()</h4>
