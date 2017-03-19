@@ -37,7 +37,7 @@ namespace MVC5Course.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
+            ViewBag.aActionInvoker = this.ActionInvoker;
             return View();
         }
 

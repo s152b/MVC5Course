@@ -352,6 +352,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Views\Metro\_ViewStart.cshtml" />
     <Content Include="widgets.html" />
     <EntityDeploy Include="Models\Fabrics.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -441,7 +442,7 @@
     <Content Include="Views\Shared\_Layout.Metro.cshtml" />
     <Content Include="Views\Metro\Index.cshtml" />
     <Content Include="Views\Metro\Form.cshtml" />
-    <Content Include="Views\Metro\_ViewStart.cshtml" />
+    <Content Include="Views\Products\ProdOrderLine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
